@@ -3,10 +3,11 @@ import { galleryItems } from './gallery-items.js';
 
 const selectGallery = document.querySelector('.gallery');
 
-// // 
+// //
 function createGalleryMarkup(ga) {
-    const markup = ga.map(({ preview, original, description }) => {
-        return `<div class="gallery__item">
+  const markup = ga
+    .map(({ preview, original, description }) => {
+      return `<div class="gallery__item">
         <a class="gallery__link" href="${original}">
     <img
       class="gallery__image"
@@ -16,35 +17,47 @@ function createGalleryMarkup(ga) {
     />
   </a>
 </div>
-`}).join('');
- return markup   
+`;
+    })
+    .join('');
+  return markup;
 }
 
-selectGallery.insertAdjacentHTML("beforeend", createGalleryMarkup(galleryItems));
+selectGallery.insertAdjacentHTML('beforeend', createGalleryMarkup(galleryItems));
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-selectGallery.addEventListener('click',galleryClick)
+selectGallery.addEventListener('click', galleryClick);
 
 function galleryClick(evt) {
-    if (evt.target.nodeName !== "IMG") {
-        return;
-    }
-    console.log(evt.target.dataset)
-    evt.preventDefault();
-    addModal(evt.target.dataset.source);
+  if (evt.target.nodeName !== 'IMG') {
+    return;
+  }
+  console.log(evt.target.dataset);
+  evt.preventDefault();
+  addModal(evt.target.dataset.source);
 }
-let instance
+let instance;
+// ==============================================
+// function addModal(orig) {
+//   instance = basicLightbox.create(` <img src="${orig}" ></img>`, {
+//     onShow: instance => console.log('onShow', instance),
+//     onClose: instance => console.log('onClose', instance),
+//   });
+//   instance.show(instance => console.log('finished show()', instance));
+// }
+
+// -------------------------------------
 function addModal(orig) {
-    instance = basicLightbox.create(` <img src="${orig}" ></img>`)
+  instance = basicLightbox.create(` <img src="${orig}" ></img>`);
   instance.show(() => {
     addEscListener();
-   });
-    
+  });
+
   function onEscClick(event) {
     if (event.code === 'Escape') {
       instance.close(() => {
-          removeEscListener();
+        removeEscListener();
       });
     }
   }
@@ -55,14 +68,3 @@ function addModal(orig) {
     window.removeEventListener('keydown', onEscClick);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
